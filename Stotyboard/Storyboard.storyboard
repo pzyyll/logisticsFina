@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EGg-Km-mZb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EGg-Km-mZb">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -8,7 +8,7 @@
         <!--Correct View Controller-->
         <scene sceneID="Qhs-wA-L8g">
             <objects>
-                <viewController storyboardIdentifier="correctView" id="EGg-Km-mZb" customClass="CorrectViewController" customModule="Second_IOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="correctView" id="EGg-Km-mZb" customClass="CorrectViewController" customModule="BaiduMapiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PgY-0o-KTH"/>
                         <viewControllerLayoutGuide type="bottom" id="ixh-IQ-w9p"/>
@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="550"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="correctCell" rowHeight="231" id="Z9P-1Y-xhb" customClass="CorrectTableViewCell" customModule="Second_IOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="correctCell" rowHeight="231" id="Z9P-1Y-xhb" customClass="CorrectTableViewCell" customModule="BaiduMapiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="600" height="231"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z9P-1Y-xhb" id="o5h-GJ-9zW">
@@ -259,7 +259,7 @@
         <!--My Order Detail View Controller-->
         <scene sceneID="542-hf-xDI">
             <objects>
-                <viewController storyboardIdentifier="myOrderDetail" id="svG-Pc-34C" customClass="MyOrderDetailViewController" customModule="Second_IOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="myOrderDetail" id="svG-Pc-34C" customClass="MyOrderDetailViewController" customModule="BaiduMapiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LQE-nq-K3W"/>
                         <viewControllerLayoutGuide type="bottom" id="axW-4j-4uO"/>
@@ -302,6 +302,12 @@
                                     <constraint firstAttribute="trailing" secondItem="YPp-qu-fwk" secondAttribute="trailing" constant="10" id="sSs-yF-3Nu"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yco-ci-BwY">
+                                <rect key="frame" x="0.0" y="173" width="189" height="69"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
