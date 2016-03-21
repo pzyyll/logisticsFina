@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 import Alamofire
 
-let urlLogin = "http://localhost/logistics/interface/login.php"                 //登录
-let urlAllOrder = "http://localhost/logistics/interface/allOrderData.php"       //获取全部的最新订单信息
-let urlUpdateRec = "http://localhost/logistics/interface/addOrderHadRec.php"    //更新我的接单信息
-let urlAllMyOrder = "http://localhost/logistics/interface/allMyOrderData.php"   //获取我的全部订单信息
+let urlLogin = "http://ooly.club/ios/exam/interface/login.php"                 //登录
+let urlAllOrder = "http://ooly.club/ios/exam/interface/allOrderData.php"       //获取全部的最新订单信息
+let urlUpdateRec = "http://ooly.club/ios/exam/interface/addOrderHadRec.php"    //更新我的接单信息
+let urlAllMyOrder = "http://ooly.club/ios/exam/interface/allMyOrderData.php"   //获取我的全部订单信息
 
 class GRNetWork {
     class func getAllOrderData(completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> Void) {
