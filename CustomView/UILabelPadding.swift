@@ -73,3 +73,9 @@ class UILabelPadding : UILabel {
     }
     
 }
+
+extension UILabelPadding {
+    func resetFrameByTxtRect() {
+        self.bounds.size = UILabelPadding.getTxtSize(self.font, txt: self.text!)
+    }
+}

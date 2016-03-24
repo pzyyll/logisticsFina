@@ -45,8 +45,12 @@ class LoginViewWithSBController: UIViewController, UITextFieldDelegate {
         let pwd = self.passwd.text
         
         let paras = ["user": user!, "pwd": pwd!]
-        GRNetWork.loginRequest(paras) { (_, _, data, _) -> Void in
+        GRNetWork.loginRequest(paras) { (_, _, data, er) -> Void in
             let json = JSON(data: data!)
+            print(json)
+            if er != nil {
+                print(er)
+            }
             if json["deniable"].int == 0 {
                 //验证成功
                 NSUserDefaults.standardUserDefaults().setObject(user, forKey: "user")
@@ -89,7 +93,6 @@ class LoginViewWithSBController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    //?如何知道响应的是哪个文本框？
     func textFieldShouldClear(textField: UITextField) -> Bool {
         login.enabled = false
         self.login.layer.borderColor = UIColor(red: 156/255, green: 156/255, blue: 156/255, alpha: 0.5).CGColor

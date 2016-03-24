@@ -17,6 +17,8 @@ class MyOrderDetailViewController: UIViewController {
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var correctBtn2: UIButton!
     
+    var tableView: MyOrderDetailTableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,6 +44,9 @@ class MyOrderDetailViewController: UIViewController {
     }
     
     func viewConfig() {
+        self.view.backgroundColor = UIColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1)
+        self.navigationController?.navigationBar.hideBottomHairline()
+        
         //back btn
         self.tabBarController?.tabBar.hidden = true
         let img = UIImage(named: "Arrow_Back_72px")
@@ -51,6 +56,11 @@ class MyOrderDetailViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = backBtnItem
 
         self.correctBtn2.setTitle("开始配送", forState: .Normal)
+        
+        
+        self.tableView = MyOrderDetailTableView(frame: self.view.frame, style: .Plain)
+        self.tableView.frame.size.height -= (50 + 64)
+        self.view.addSubview(self.tableView)
     }
     
     func back() {

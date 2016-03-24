@@ -57,11 +57,13 @@ class LinkViewController: UIViewController {
         }
         
        // self.view.backgroundColor = UIColor.whiteColor()
-        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        self.window?.backgroundColor = UIColor.whiteColor()
-        window!.rootViewController=Tabbar;
-        window!.makeKeyAndVisible()
-        self.view.addSubview(window!)
+//        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+//        self.window?.backgroundColor = UIColor.whiteColor()
+//        window!.rootViewController=Tabbar;
+//        window!.makeKeyAndVisible()
+//        self.view.addSubview(window!)
+        self.window = (UIApplication.sharedApplication().delegate?.window)!
+        self.window?.rootViewController = Tabbar
         
     }
 

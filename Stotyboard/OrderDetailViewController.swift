@@ -100,7 +100,7 @@ class OrderDetailViewController: UIViewController {
         self.touch_way.text = self.orderDetail.phone_num
         self.touch_way.text!.replaceRange(Range(start: self.touch_way.text!.startIndex.advancedBy(3), end: self.touch_way.text!.endIndex.advancedBy(-4)), with: "****")
         self.address.text = self.orderDetail.org_Station
-        
+        self.od_station.text = self.orderDetail.org_Station + " → " + self.orderDetail.des_Station
         var labels = [UILabelPadding]()
         labels.append(ViewFactory.createNewOrderLabel(self.orderDetail.T_range))
         labels.append(ViewFactory.createNewOrderLabel("\(self.orderDetail.loads!)吨"))
@@ -162,10 +162,13 @@ class OrderDetailViewController: UIViewController {
     @IBAction func receiveOrderAction(sender: UIButton) {
         //let loadingView = LoadingViewController()
         //self.navigationController?.pushViewController(loadingView, animated: true)
+        
         let sb = UIStoryboard(name: "Storyboard", bundle: nil)
         let cvc = sb.instantiateViewControllerWithIdentifier("correctView") as! CorrectViewController
         cvc.orderDetail = self.orderDetail
         self.navigationController?.pushViewController(cvc, animated: true)
+
+
     }
     
     /*

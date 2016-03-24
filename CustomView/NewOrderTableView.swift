@@ -44,6 +44,7 @@ class NewOrderTableView: UITableView, UITableViewDataSource, UITableViewDelegate
         self.dataSource = self
         self.separatorStyle = .None
         self.backgroundColor = UIColor.clearColor()
+        
     }
     
     func sortDate(m1: OrderItem, m2: OrderItem) -> Bool {
@@ -128,7 +129,8 @@ class NewOrderTableView: UITableView, UITableViewDataSource, UITableViewDelegate
         let newViewCtr = OrderDetailViewController()
         newViewCtr.orderDetail = self.orderLib.OrderItems[indexPath.section]
         self.controllerDelegate.getViewCtr()!.navigationController?.pushViewController(newViewCtr, animated: true)
-
+        
+        self.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
     func phoneAction(btn: UIButton) {

@@ -40,32 +40,44 @@ class CorrectViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func correctAction(sender: UIButton) {
-        let user = NSUserDefaults.standardUserDefaults().valueForKey("user")
-        let paras = ["user": user!, "order_num": self.orderDetail.orderID]
-        GRNetWork.updateNewOrderHadRec(paras) { (_, _, data, err) -> Void in
+        let aler = UIAlertController(title: "-_-!", message: "确定确定，are you 确定????", preferredStyle: UIAlertControllerStyle.Alert)
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (act) -> Void in
             
-            if err != nil {
-                self.showWarn()
-                //self.showAlert()
+            let user = NSUserDefaults.standardUserDefaults().valueForKey("user")
+            let paras = ["user": user!, "order_num": self.orderDetail.orderID]
+            GRNetWork.updateNewOrderHadRec(paras) { (_, _, data, err) -> Void in
+                if err != nil {
+                    self.showWarn()
+                }
+                let jsonData = JSON(data: data!)
+                if jsonData["status"] == 1 {
+                    self.showAlert({ (act) -> Void in
+                        let viewCtrs = self.navigationController?.viewControllers
+                        let rootCtr = viewCtrs![0] as! OrderViewController
+                        rootCtr.loadNewOrderData()
+                        rootCtr.loadingMyOrderData()
+                        rootCtr.tabBarController?.tabBar.hidden = false
+                        self.navigationController?.popToRootViewControllerAnimated(true)
+                    })
+
+                } else {
+                    self.showWarn()
+                }
             }
-            let jsonData = JSON(data: data!)
-            if jsonData["status"] == 1 {
-                //self.showAlert()
-                let viewCtrs = self.navigationController?.viewControllers
-                let rootCtr = viewCtrs![0] as! OrderViewController
-                rootCtr.loadNewOrderData()
-                rootCtr.loadingMyOrderData()
-                rootCtr.tabBarController?.tabBar.hidden = false
-                self.navigationController?.popToRootViewControllerAnimated(true)
-            } else {
-                self.showWarn()
-            }
-        }
+            
+         }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+        aler.addAction(okAction)
+        aler.addAction(cancelAction)
+        self.presentViewController(aler, animated: true, completion: nil)
+        
     }
     
-    func showAlert() {
+    func showAlert(handler: (UIAlertAction) -> Void) {
         let alerView = UIAlertController(title: "", message: "您成功接单~尽快和商家联系哦！", preferredStyle: UIAlertControllerStyle.Alert)
-        alerView.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        alerView.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: handler))
+        self.presentViewController(alerView, animated: true, completion: nil)
     }
     
     func showWarn() {

@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import Alamofire
 
 enum CtrType {
     case Cell
@@ -23,13 +22,13 @@ class ViewFactory {
     }
     
     class func createCtr(type: CtrType, titles: [String]
-        , action: Selector, sender: AnyObject,
+        , action: Selector, sender: AnyObject?,
         otherConfig items: [AnyObject]!) -> UIView {
             switch type {
             case .btn:
-                return self.createBtn()
+                return self.createBtn(titles[0], antion: action, sender: sender)
             case .Label:
-                return self.createLable()
+                return self.createLable(titles[0])
             case .Cell:
                 return self.createCell()
             case .NewOrderLabel:
@@ -37,12 +36,13 @@ class ViewFactory {
             }
     }
     
-    class func createBtn() -> UIButton {
-        return UIButton()
-    }
-    
-    class func createLable() -> UILabel {
-        return UILabel()
+    class func createLable(title: String) -> UILabel {
+        let label = UILabel(frame: ViewFactory.getDefautRect())
+        label.text = title
+        label.backgroundColor = UIColor.whiteColor()
+        label.textColor = UIColor.blackColor()
+        label.font = UIFont.systemFontOfSize(12)
+        return label
     }
     
     class func createCell() -> UITableViewCell {
@@ -70,5 +70,20 @@ class ViewFactory {
         label.frame.size.width = UILabelPadding.getTxtSize(label.font, txt: title).width + label.paddingLeft * 2
         
         return label
+    }
+    
+    class func createBtn(title: String, antion: Selector, sender: AnyObject?) -> UIButton {
+        let btn = UIButton(frame: ViewFactory.getDefautRect())
+        btn.setTitle(title, forState: .Normal)
+        btn.setTitleColor(UIColor.myGreenColor(), forState: .Normal)
+        btn.layer.borderColor = UIColor.myGreenColor().CGColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 2
+        btn.setBackgroundImage(UIImage(named: "loginBtnClickedV2"), forState: .Highlighted)
+        btn.clipsToBounds = true
+        btn.userInteractionEnabled = true
+        btn.addTarget(sender, action: antion, forControlEvents: .TouchUpInside)
+        
+        return btn
     }
 }
