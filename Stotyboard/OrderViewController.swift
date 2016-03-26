@@ -284,7 +284,7 @@ MyRecOrderTableViewDataSource {
                         let myOrderItem = MyOrderItem()
                         myOrderItem.setDate(item)
                         print(item)
-                        print(item["a_status"])
+//                        print(item["a_status"])
                         self.myOrderLib.myOrderItems.append(myOrderItem)
                     }
                     

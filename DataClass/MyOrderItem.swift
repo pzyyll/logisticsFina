@@ -15,6 +15,7 @@ class MyOrderItem {
     var start_distrubution: String!
     var end_distrubution: String!
     var status: Int!
+    var a_id: String!
     init () {
         self.orderDetail = OrderItem()
         self.acceptTime = ""
@@ -29,6 +30,6 @@ class MyOrderItem {
         }
         self.start_distrubution = item["start_distrubution"].string ?? nil
         self.end_distrubution = item["end_distrubution"].string ?? nil
-        
+        self.a_id = item["a_id"].string ?? nil
     }
 }

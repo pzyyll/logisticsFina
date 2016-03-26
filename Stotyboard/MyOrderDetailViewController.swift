@@ -8,11 +8,11 @@
 
 import UIKit
 
-class MyOrderDetailViewController: UIViewController {
+class MyOrderDetailViewController: UIViewController, MyOrderTableViewDataSource {
 
 
     var myOrderDetailItem: MyOrderItem!
-    
+    var dataItems: [[String: String]]!
    
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var correctBtn2: UIButton!
@@ -21,7 +21,7 @@ class MyOrderDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.dataItems = [[String: String]]()
         self.viewConfig()
         // Do any additional setup after loading the view.
     }
@@ -32,7 +32,6 @@ class MyOrderDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        //self.correctBtn.titleLabel?.text = "开始配送"
         switch self.myOrderDetailItem.status {
         case 0:
             self.correctBtn2.setTitle("开始配送", forState: .Normal)
@@ -41,6 +40,11 @@ class MyOrderDetailViewController: UIViewController {
         default:
             self.bottomView.removeFromSuperview()
         }
+        
+        self.loadingData()
+        self.setDataItem()
+        self.tableView.reloadData()
+        self.tableView.setStatus(self.myOrderDetailItem.status)
     }
     
     func viewConfig() {
@@ -60,12 +64,65 @@ class MyOrderDetailViewController: UIViewController {
         
         self.tableView = MyOrderDetailTableView(frame: self.view.frame, style: .Plain)
         self.tableView.frame.size.height -= (50 + 64)
+        self.tableView.dateDelegate = self
         self.view.addSubview(self.tableView)
     }
     
     func back() {
         self.navigationController?.popViewControllerAnimated(true)
         self.tabBarController?.tabBar.hidden = false
+    }
+    
+    func MyOrderTableView(numOfData num: Int) -> Int {
+        return self.dataItems.count
+    }
+    func MyOrderTableView(dataForRow row: Int) -> AnyObject? {
+        return self.dataItems[row]
+    }
+    
+    func loadingData() {
+        let paras = ["user": NSUserDefaults.standardUserDefaults().stringForKey("user")!,
+            "a_id": self.myOrderDetailItem.a_id!
+        ]
+        print(paras)
+        print("999999999999999999999999999")
+        GRNetWork.getOneMyOrderDataByOrderID(paras) { (_, _, data, err) -> Void in
+            let json = JSON(data: data!)
+            if json["1"].int != 0 {
+                print(json["1"][0])
+                self.myOrderDetailItem.setDate(json["1"][0])
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.setDataItem()
+                    self.tableView.reloadData()
+                })
+            }
+        }
+    }
+    
+    func setDataItem() {
+        if (!self.dataItems.isEmpty) {
+            self.dataItems.removeAll()
+        }
+        
+        self.dataItems.append(["订单详情": "订单编号 \(self.myOrderDetailItem.a_id)"]);
+        self.dataItems.append(["商家": "\(self.myOrderDetailItem.orderDetail.sender)"]);
+        self.dataItems.append(["联系人": "\(self.myOrderDetailItem.orderDetail.contacts)"]);
+        self.dataItems.append(["联系方式": "\(self.myOrderDetailItem.orderDetail.phone_num)"]);
+        self.dataItems.append(["下单时间": "\(self.myOrderDetailItem.acceptTime)"]);
+        switch self.myOrderDetailItem.status {
+        case 0:
+            self.dataItems.append(["送达时间": "赶紧配送拉！"]);
+            break;
+        case 1:
+            self.dataItems.append(["送达时间": "配送中"]);
+            break;
+        case 2:
+            self.dataItems.append(["送达时间": "\(self.myOrderDetailItem)"]);
+        default:
+            self.dataItems.append(["送达时间": "已取消"]);
+            break
+        }
+        
     }
     
     /*

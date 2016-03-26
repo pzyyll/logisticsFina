@@ -110,6 +110,8 @@ class MyOrderTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
         let storyboard = UIStoryboard(name: "Storyboard", bundle: nil)
         let ctr = storyboard.instantiateViewControllerWithIdentifier("myOrderDetail") as! MyOrderDetailViewController
         ctr.myOrderDetailItem = self.myOrderLib.myOrderItems[indexPath.section]
+        print(ctr.myOrderDetailItem.a_id)
+        print("=======")
         self.ctrDelegate.getViewCtr()?.navigationController?.pushViewController(ctr, animated: true)
         
         self.deselectRowAtIndexPath(indexPath, animated: false)

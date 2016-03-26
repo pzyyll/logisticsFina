@@ -24,3 +24,15 @@ extension UIImageView {
         self.bounds.size.height += px
     }
 }
+
+extension UIView {
+    func parentViewController() -> UIViewController? {
+        for (var next = self.superview; next != nil; next = next?.superview) {
+            let ctr = next?.nextResponder()
+            if (ctr is UIViewController) {
+                return ctr as? UIViewController
+            }
+        }
+        return nil
+    }
+}

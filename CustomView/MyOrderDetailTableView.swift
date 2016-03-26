@@ -32,7 +32,7 @@ class MyOrderDetailTableView: UITableView, UITableViewDataSource, UITableViewDel
     var locatedPoint: UIImageView!
     var seekLabels: [UILabelPadding]!
     
-    var dataItems: [(String, String)]!
+    var dataItems: [[String: String]]!
     var dateDelegate: MyOrderTableViewDataSource!
     
     override init(frame: CGRect, style: UITableViewStyle) {
@@ -44,7 +44,7 @@ class MyOrderDetailTableView: UITableView, UITableViewDataSource, UITableViewDel
         self.bounces = false
         self.separatorInset = UIEdgeInsets(top: 0, left: 1000, bottom: 0, right: 0)
         self.registerClass(UITableViewCell.self, forCellReuseIdentifier: "13")
-        
+        self.dataItems = [[String: String]]()
         
         let rect = UIScreen.mainScreen().bounds
         let headerView = UIView(frame: CGRectMake(0, 0, rect.width, 165))
@@ -126,8 +126,7 @@ class MyOrderDetailTableView: UITableView, UITableViewDataSource, UITableViewDel
         }
         
         self.setLocatePoint(0)
-        self.setLocatePoint(1)
-        self.setLocatePoint(2)
+
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -139,16 +138,27 @@ class MyOrderDetailTableView: UITableView, UITableViewDataSource, UITableViewDel
         return dataItems.count
     }
     
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == self.dataItems.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 394)
+        }
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Value1, reuseIdentifier: "13")
         
-        cell.textLabel?.text = "13"
-        cell.detailTextLabel?.text = "13"
+        let (key, val) = self.dataItems![indexPath.row].first!
         cell.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
         cell.selectionStyle = .None
         if indexPath.row == 0 {
-            cell.accessoryType = .DisclosureIndicator
             cell.selectionStyle = .Default
+            cell.textLabel?.text = key
+            cell.detailTextLabel?.text = val
+            cell.detailTextLabel?.font = UIFont.systemFontOfSize(10)
+        } else {
+            cell.textLabel?.text = "\(key) : \(val)"
+            cell.textLabel?.textColor = UIColor.lightGrayColor()
+            cell.textLabel?.font = UIFont.systemFontOfSize(12)
         }
         
         return cell
@@ -173,31 +183,44 @@ class MyOrderDetailTableView: UITableView, UITableViewDataSource, UITableViewDel
     }
     
     func cancelAction(sender: UIButton) {
-        print("btn")
+        let ctr = self.parentViewController() as! MyOrderDetailViewController
+        
+        let aler = UIAlertController(title: "Del Warning!!", message: "Are you sure del del del??", preferredStyle: UIAlertControllerStyle.Alert)
+        let okBtn = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (act) -> Void in
+            let paras = ["order_num": ctr.myOrderDetailItem.orderDetail.orderID!,
+                "a_id": ctr.myOrderDetailItem.a_id!,
+                "status": "3"
+            ]
+            print(paras)
+            GRNetWork.updateMyOrder(paras) { (_, _, data, err) -> Void in
+                let json = JSON(data: data!)
+                if json.int != 0 {
+                    print(json)
+                } else {
+                    print(json)
+                }
+            }
+        }
+        let cancelBtn = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
+        aler.addAction(cancelBtn)
+        aler.addAction(okBtn)
+        ctr.presentViewController(aler, animated: true, completion: nil)
     }
     
     func setLocatePoint(point: Int) {
         let colorBlue = UIColor(red: 82/255, green: 173/255, blue: 231/255, alpha: 1)
         
-        self.seekPoints[point].image = UIImage(named: "seekbar_scrubber_control_disabled");
-        self.seekPoints[point].setScaler(5)
-        self.locatedPoint.center.x = self.seekPoints[point].center.x
-        self.locatedPoint.center.y = self.seekPoints[point].center.y - self.seekPoints[point].frame.height/2 - self.locatedPoint.frame.height/2
-        
+        if (point < 3) {
+            self.seekPoints[point].image = UIImage(named: "seekbar_scrubber_control_disabled");
+            self.seekPoints[point].setScaler(5)
+            self.locatedPoint.center.x = self.seekPoints[point].center.x
+            self.locatedPoint.center.y = self.seekPoints[point].center.y - self.seekPoints[point].frame.height/2 - self.locatedPoint.frame.height/2
+        }
         switch point {
         case 0:
             self.seekLabels[0].textColor = colorBlue
         case 1:
-//            self.seekBars[point - 1].backgroundColor = colorBlue
-//            self.seekBars[point - 1].layer.shadowColor = colorBlue.CGColor
-//            self.seekBars[point - 1].layer.shadowRadius = 1
-//            self.seekBars[point - 1].layer.shadowOffset = CGSize(width: 0, height: 0)
-//            self.seekBars[point - 1].layer.shadowOpacity = 0.6
-//            self.seekPoints[point - 1].image = UIImage(named: "seekPoint_pass")
-//            self.seekPoints[point - 1].setScaler(-5)
-//            self.seekLabels[point - 1].textColor = UIColor.lightGrayColor()
-//            self.seekLabels[point].textColor = colorBlue
-            self.seekLabels[point - 1].text = "2016-12-31 12:12:12"
+            self.seekLabels[point - 1].text = (self.parentViewController() as! MyOrderDetailViewController).myOrderDetailItem.start_distrubution
             self.seekLabels[point - 1].resetFrameByTxtRect()
             fallthrough
         case 2:
@@ -211,6 +234,10 @@ class MyOrderDetailTableView: UITableView, UITableViewDataSource, UITableViewDel
             self.seekLabels[point - 1].textColor = UIColor.lightGrayColor()
             self.seekLabels[point].textColor = colorBlue
         default:
+            self.seekPoints[0].image = UIImage(named: "seekbar_scrubber_control_disabled-1")
+            self.locatedPoint.image = UIImage(named: "infoflow_located_city_icon-1")
+            self.seekLabels[0].text = "已取消"
+            self.seekLabels[0].textColor = UIColor.lightGrayColor()
             break
         }
     }
@@ -222,13 +249,40 @@ class MyOrderDetailTableView: UITableView, UITableViewDataSource, UITableViewDel
             count = self.dateDelegate.MyOrderTableView(numOfData: 0)
             if count > 0 {
                 for i in 0..<count {
-                    let item = self.dateDelegate.MyOrderTableView(dataForRow: i) as! (String, String)
-                    //self.dataItems
+                    let item = self.dateDelegate.MyOrderTableView(dataForRow: i) as! [String: String]
+                    self.dataItems.append(item)
+                    print(item)
                 }
-                //orderLib.OrderItems.sortInPlace(sortDate)
             }
         }
         super.reloadData()
     }
 
+    func setStatus(status: Int) {
+        switch status {
+        case 0:
+            break;
+        case 1:
+            self.statusLabel.text = "配送中"
+            self.statusSubDetailLabel.text = "咻~咻~咻~"
+            self.setLocatePoint(status)
+            self.cancelBtn.removeFromSuperview()
+            break;
+        case 2:
+            self.statusLabel.text = "已送达"
+            self.statusSubDetailLabel.text = "棒棒哒！"
+            for i in 1...2 {
+                self.setLocatePoint(i)
+            }
+            self.cancelBtn.removeFromSuperview()
+            break;
+        default:
+            self.cancelBtn.removeFromSuperview()
+            self.statusLabel.text = "已取消"
+            self.statusSubDetailLabel.text = "-_-!!"
+            self.setLocatePoint(status)
+            (self.parentViewController() as! MyOrderDetailViewController).bottomView.removeFromSuperview()
+            break;
+        }
+    }
 }

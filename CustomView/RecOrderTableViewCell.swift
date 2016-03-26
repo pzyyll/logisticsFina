@@ -37,7 +37,7 @@ class RecOrderTableViewCell: UITableViewCell {
     }
     
     func setData(item: MyOrderItem) {
-        self.orderID.text = item.orderDetail.orderID
+        self.orderID.text = item.a_id
         self.sd_station.text = item.orderDetail.org_Station + " → " + item.orderDetail.des_Station
         switch item.status {
         case 0:
@@ -49,6 +49,7 @@ class RecOrderTableViewCell: UITableViewCell {
             self.order_status.text = "已送达"
         default:
             self.order_status.text = "已取消"
+            self.order_status.textColor = UIColor.blackColor()
         }
         self.accept_time.text = item.acceptTime
     }
