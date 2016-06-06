@@ -12,7 +12,7 @@ import Alamofire
 
 let urlHead1 = "http://www.ooly.club/ios/exam/interface"
 let urlHead2 = "http://localhost/logistics/interface"
-let urlHead = urlHead1
+let urlHead = urlHead2
 let urlLogin = "\(urlHead)/login.php"                 //登录
 let urlAllOrder = "\(urlHead)/allOrderData.php"       //获取全部的最新订单信息
 let urlUpdateRec = "\(urlHead)/addOrderHadRec.php"    //更新我的接单信息
